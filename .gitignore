@@ -1,0 +1,10 @@
+# Local Java and Gradle runtimes
+.jdk17/
+.gradle-local/
+
+# Gradle caches and generated build files
+.gradle/
+build/*
+!build/libs/
+build/libs/*
+!build/libs/*.jar

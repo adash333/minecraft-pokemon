@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "minecraftpokemon:item/rainbow_mango"
+  }
+}

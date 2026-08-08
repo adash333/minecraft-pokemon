@@ -1,0 +1,102 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:6.0.53'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+
+group = 'com.adash333.minecraftpokemon'
+
+def versionFile = file('VERSION')
+if (!versionFile.exists()) {
+    throw new GradleException('VERSION file is missing')
+}
+
+def storedVersion = versionFile.text.trim()
+def versionMatcher = storedVersion =~ /^(\d+)\.(\d+)\.(\d+)$/
+if (!versionMatcher.matches()) {
+    throw new GradleException("VERSION must use MAJOR.MINOR.PATCH format: ${storedVersion}")
+}
+
+def releaseRequested = gradle.startParameter.taskNames.any {
+    it == 'release' || it.endsWith(':release')
+}
+def releaseVersion = storedVersion
+if (releaseRequested) {
+    releaseVersion = "${versionMatcher.group(1)}.${versionMatcher.group(2)}.${versionMatcher.group(3).toInteger() + 1}"
+}
+version = releaseVersion
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                minecraftpokemon {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run-server')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                minecraftpokemon {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.2.20'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.named('processResources') {
+    inputs.property 'modVersion', project.version
+    filesMatching('META-INF/mods.toml') {
+        expand modVersion: project.version
+    }
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes 'Implementation-Version': project.version
+    }
+}
+
+tasks.register('release') {
+    group = 'build'
+    description = 'Increments the patch version, builds the distributable JAR, and saves the new version.'
+    dependsOn tasks.named('build')
+
+    doLast {
+        versionFile.setText("${project.version}\n", 'UTF-8')
+        logger.lifecycle("Released minecraft-pokemon ${project.version}")
+    }
+}

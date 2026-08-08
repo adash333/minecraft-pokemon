@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Command gradle -ErrorAction SilentlyContinue)",
+      "PowerShell(java -version 2>&1)",
+      "Read(//c/Program Files/Java/**)",
+      "Read(//c/Program Files/**)",
+      "Bash(Get-ChildItem -Path \"c:\\\\ai\\\\minecraft-pokemon\" -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "Bash(Sort-Object FullName)"
+    ]
+  }
+}

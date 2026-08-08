@@ -1,0 +1,16 @@
+{
+  "block.minecraftpokemon.ball_gacha": "モンスターボールガチャ",
+  "block.minecraftpokemon.food_gacha": "もものみガチャ",
+  "item.minecraftpokemon.monster_ball": "モンスターボール",
+  "item.minecraftpokemon.peach_berry": "もものみ",
+  "item.minecraftpokemon.rainbow_mango": "虹色のマンゴー",
+  "entity.minecraftpokemon.mew_block": "ミュウブロック",
+  "entity.minecraftpokemon.dragon_pokemon": "ミニリュウ",
+  "entity.minecraftpokemon.miniryu": "ミニリュウ",
+  "entity.minecraftpokemon.hakuryu": "ハクリュウ",
+  "entity.minecraftpokemon.kairyu": "カイリュー",
+  "message.minecraftpokemon.evolved": "%1$s が %2$s に進化した！",
+  "message.minecraftpokemon.fully_evolved": "%1$s はこれ以上進化しない",
+  "message.minecraftpokemon.caught": "やった！ %1$s がなついた！",
+  "message.minecraftpokemon.escaped": "%1$s は逃げ出した！"
+}
