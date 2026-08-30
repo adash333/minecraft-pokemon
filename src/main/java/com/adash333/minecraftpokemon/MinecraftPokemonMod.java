@@ -40,6 +40,13 @@ public class MinecraftPokemonMod {
             event.accept(ModItems.MONSTER_BALL);
             event.accept(ModItems.PEACH_BERRY);
             event.accept(ModItems.RAINBOW_MANGO);
+            event.accept(ModItems.HAMBURGER);
+            event.accept(ModItems.FRENCH_FRIES);
+            event.accept(ModItems.ICE_CREAM);
+            event.accept(ModItems.SALAD);
+            event.accept(ModItems.CREEPER_COLA);
+            event.accept(ModItems.MELON_PAN);
+            event.accept(ModItems.MELON_SODA);
             event.accept(ModBlocks.BALL_GACHA);
             event.accept(ModBlocks.FOOD_GACHA);
         }

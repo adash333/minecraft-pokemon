@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " M ",
+    " G ",
+    " G "
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:melon"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    }
+  },
+  "result": {
+    "item": "minecraftpokemon:melon_soda",
+    "count": 1
+  }
+}

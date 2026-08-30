@@ -26,7 +26,9 @@ public final class ModBlocks {
             () -> new GachaBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_PINK)
                     .strength(2.5F)
-                    .sound(SoundType.METAL), ModItems.PEACH_BERRY, ModItems.RAINBOW_MANGO));
+                    .sound(SoundType.METAL), ModItems.PEACH_BERRY, ModItems.RAINBOW_MANGO,
+                    ModItems.HAMBURGER, ModItems.FRENCH_FRIES, ModItems.ICE_CREAM, ModItems.SALAD,
+                    ModItems.CREEPER_COLA, ModItems.MELON_PAN, ModItems.MELON_SODA));
 
     public static final RegistryObject<Item> BALL_GACHA_ITEM = ModItems.ITEMS.register("ball_gacha",
             () -> new BlockItem(BALL_GACHA.get(), new Item.Properties()));
