@@ -1,6 +1,8 @@
 package com.adash333.minecraftpokemon.world;
 
 import com.adash333.minecraftpokemon.entity.MewBlockEntity;
+import com.adash333.minecraftpokemon.entity.PlayerSeparation;
+import net.minecraft.world.phys.Vec3;
 import com.adash333.minecraftpokemon.entity.DragonPokemonEntity;
 import com.adash333.minecraftpokemon.registry.ModBlocks;
 import com.adash333.minecraftpokemon.registry.ModEntities;
@@ -42,9 +44,13 @@ public class SpawnGachaPlacer {
         for (int i = 0; i < 5; i++) {
             MewBlockEntity mew = ModEntities.MEW_BLOCK.get().create(level);
             if (mew != null) {
-                BlockPos pos = base.offset(-4 + i * 2, 0, 6 + (i % 2));
+                BlockPos pos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                        base.offset(-8 + i * 4, 0, 28));
                 mew.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, level.random.nextFloat() * 360.0F, 0.0F);
-                level.addFreshEntity(mew);
+                raiseMewSpawn(level, mew);
+                if (PlayerSeparation.isClear(mew, mew.position()) && level.noCollision(mew)) {
+                    level.addFreshEntity(mew);
+                }
             }
         }
 
@@ -164,7 +170,16 @@ public class SpawnGachaPlacer {
         }
 
         mew.moveTo(spawnPos.getX() + 0.5D, spawnPos.getY(), spawnPos.getZ() + 0.5D, level.random.nextFloat() * 360.0F, 0.0F);
+        Vec3 safePosition = PlayerSeparation.findPosition(mew, player.position(), true);
+        if (safePosition == null) return;
+        mew.setPos(safePosition.x, safePosition.y, safePosition.z);
         level.addFreshEntity(mew);
+    }
+
+    private static void raiseMewSpawn(ServerLevel level, MewBlockEntity mew) {
+        if (level.noCollision(mew, mew.getBoundingBox().expandTowards(0.0D, 1.5D, 0.0D))) {
+            mew.setPos(mew.getX(), mew.getY() + 1.5D, mew.getZ());
+        }
     }
 
     private void spawnMiniryuNearPlayer(ServerLevel level, ServerPlayer player) {
@@ -185,6 +200,9 @@ public class SpawnGachaPlacer {
         miniryu.setStage(DragonPokemonEntity.MINIRYU_STAGE);
         miniryu.moveTo(spawnPos.getX() + 0.5D, spawnPos.getY(), spawnPos.getZ() + 0.5D,
                 level.random.nextFloat() * 360.0F, 0.0F);
+        Vec3 safePosition = PlayerSeparation.findPosition(miniryu, player.position(), false);
+        if (safePosition == null) return;
+        miniryu.setPos(safePosition.x, safePosition.y, safePosition.z);
         level.addFreshEntity(miniryu);
     }
 }

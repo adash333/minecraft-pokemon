@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "minecraftpokemon:block/vending_machine_upper_side",
+    "up": "minecraftpokemon:block/vending_machine_top",
+    "north": "minecraftpokemon:block/vending_machine_upper_front",
+    "south": "minecraftpokemon:block/vending_machine_upper_side",
+    "west": "minecraftpokemon:block/vending_machine_upper_side",
+    "east": "minecraftpokemon:block/vending_machine_upper_side",
+    "particle": "minecraftpokemon:block/vending_machine_upper_side"
+  }
+}

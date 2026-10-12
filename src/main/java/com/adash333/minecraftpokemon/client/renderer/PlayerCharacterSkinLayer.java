@@ -65,6 +65,10 @@ public final class PlayerCharacterSkinLayer
     public static void renderFirstPersonArm(RenderArmEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
         AbstractClientPlayer player = event.getPlayer();
+        if (com.adash333.minecraftpokemon.world.AllayTransformation.isAllay(player)) {
+            event.setCanceled(true);
+            return;
+        }
         if (player != minecraft.player || player.isInvisible()) {
             return;
         }

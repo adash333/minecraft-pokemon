@@ -5,6 +5,8 @@ import com.adash333.minecraftpokemon.entity.DragonPokemonEntity;
 import com.adash333.minecraftpokemon.registry.ModBlocks;
 import com.adash333.minecraftpokemon.registry.ModEntities;
 import com.adash333.minecraftpokemon.registry.ModItems;
+import com.adash333.minecraftpokemon.registry.ModMenus;
+import com.adash333.minecraftpokemon.registry.ModEffects;
 import com.adash333.minecraftpokemon.world.SpawnGachaPlacer;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -25,8 +27,10 @@ public class MinecraftPokemonMod {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.ITEMS.register(modBus);
+        ModEffects.EFFECTS.register(modBus);
         ModBlocks.BLOCKS.register(modBus);
         ModEntities.ENTITY_TYPES.register(modBus);
+        ModMenus.MENUS.register(modBus);
 
         modBus.addListener(this::addCreativeItems);
         modBus.addListener(this::registerAttributes);
@@ -46,9 +50,19 @@ public class MinecraftPokemonMod {
             event.accept(ModItems.SALAD);
             event.accept(ModItems.CREEPER_COLA);
             event.accept(ModItems.MELON_PAN);
+            event.accept(ModItems.ALLAY_BREAD);
             event.accept(ModItems.MELON_SODA);
+            event.accept(ModItems.WATER);
+            event.accept(ModItems.HONEY_LEMON);
+            event.accept(ModItems.CHOCOLATE_DRINK);
+            event.accept(ModItems.ORANGE_JUICE);
+            event.accept(ModItems.APPLE_JUICE);
+            event.accept(ModItems.GRAPE_JUICE);
+            event.accept(ModItems.COFFEE);
             event.accept(ModBlocks.BALL_GACHA);
             event.accept(ModBlocks.FOOD_GACHA);
+            event.accept(ModBlocks.VENDING_MACHINE);
+            event.accept(ModBlocks.ESCALATOR);
         }
     }
 

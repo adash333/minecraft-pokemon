@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    { "item": "minecraft:bread" },
+    { "item": "minecraft:sugar" },
+    { "item": "minecraft:blue_orchid" }
+  ],
+  "result": {
+    "item": "minecraftpokemon:allay_bread",
+    "count": 1
+  }
+}

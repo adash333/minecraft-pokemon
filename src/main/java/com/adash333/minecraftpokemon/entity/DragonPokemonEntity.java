@@ -26,6 +26,8 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
@@ -49,7 +51,8 @@ public class DragonPokemonEntity extends PathfinderMob implements CatchablePokem
 
     public DragonPokemonEntity(EntityType<? extends DragonPokemonEntity> type, Level level) {
         super(type, level);
-        moveControl = new FlyingMoveControl(this, 12, true);
+        moveControl = new MoveControl(this);
+        navigation = new GroundPathNavigation(this, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -92,6 +95,10 @@ public class DragonPokemonEntity extends PathfinderMob implements CatchablePokem
 
     public void setStage(int stage) {
         entityData.set(STAGE, Mth.clamp(stage, MINIRYU_STAGE, KAIRYU_STAGE));
+        moveControl = getStage() == KAIRYU_STAGE
+                ? new FlyingMoveControl(this, 12, true) : new MoveControl(this);
+        navigation = getStage() == KAIRYU_STAGE
+                ? createNavigation(level()) : new GroundPathNavigation(this, level());
         setNoGravity(getStage() == KAIRYU_STAGE);
     }
 
@@ -107,6 +114,11 @@ public class DragonPokemonEntity extends PathfinderMob implements CatchablePokem
 
         if (fleeTicks > 0) {
             fleeTicks--;
+        }
+
+        if (getStage() == MINIRYU_STAGE) {
+            PlayerSeparation.tick(this, false);
+            return;
         }
 
         Player owner = getOwnerPlayer();

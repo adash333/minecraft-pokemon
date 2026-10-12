@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraftpokemon:vending_machine"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "minecraftpokemon:vending_machine",
+          "properties": { "half": "lower" }
+        }
+      ]
+    }
+  ]
+}

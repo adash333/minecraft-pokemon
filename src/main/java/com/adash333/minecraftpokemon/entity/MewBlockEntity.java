@@ -2,6 +2,7 @@ package com.adash333.minecraftpokemon.entity;
 
 import com.adash333.minecraftpokemon.registry.ModItems;
 import java.util.Optional;
+
 import java.util.UUID;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -20,9 +21,13 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -40,22 +45,43 @@ public class MewBlockEntity extends PathfinderMob implements CatchablePokemon {
 
     public MewBlockEntity(EntityType<? extends MewBlockEntity> type, Level level) {
         super(type, level);
-        setNoGravity(false);
+        moveControl = new FlyingMoveControl(this, 12, true);
+        setNoGravity(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10000.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.28D)
+                .add(Attributes.FLYING_SPEED, 0.35D)
                 .add(Attributes.FOLLOW_RANGE, 24.0D);
     }
 
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(4, new RandomStrollGoal(this, 0.9D));
+        goalSelector.addGoal(4, new WaterAvoidingRandomFlyingGoal(this, 0.9D) {
+            @Override
+            public boolean canUse() {
+                return fleeTicks == 0 && super.canUse();
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return fleeTicks == 0 && super.canContinueToUse();
+            }
+        });
         goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        FlyingPathNavigation navigation = new FlyingPathNavigation(this, level);
+        navigation.setCanOpenDoors(false);
+        navigation.setCanFloat(true);
+        navigation.setCanPassDoors(true);
+        return navigation;
     }
 
     @Override
@@ -68,6 +94,9 @@ public class MewBlockEntity extends PathfinderMob implements CatchablePokemon {
 
     @Override
     public void tick() {
+        // Restore flight for existing entities loaded from older saves, too.
+        setNoGravity(true);
+        fallDistance = 0;
         super.tick();
         if (level().isClientSide) {
             return;
@@ -77,12 +106,25 @@ public class MewBlockEntity extends PathfinderMob implements CatchablePokemon {
             fleeTicks--;
         }
 
-        Player owner = getOwnerPlayer();
-        if (owner != null && distanceToSqr(owner) > 100.0D) {
-            getNavigation().moveTo(owner, 1.25D);
-            if (distanceToSqr(owner) > 576.0D) {
-                teleportTo(owner.getX() + 1.5D, owner.getY(), owner.getZ() + 1.5D);
-            }
+        maintainHover();
+        PlayerSeparation.tick(this, true);
+    }
+
+    private void maintainHover() {
+        if (isNoAi() || isPassenger() || isInWaterOrBubble()) return;
+
+        // Disabling gravity alone leaves a newly spawned Mew standing on the ground.
+        // Lift off whenever solid ground is within 1.5 blocks, even without an AI path.
+        boolean nearGround = !level().noCollision(this,
+                getBoundingBox().expandTowards(0.0D, -1.5D, 0.0D));
+        boolean roomAbove = level().noCollision(this,
+                getBoundingBox().expandTowards(0.0D, 0.2D, 0.0D));
+        Vec3 velocity = getDeltaMovement();
+        if (nearGround && roomAbove) {
+            setDeltaMovement(velocity.x, Math.max(velocity.y, 0.12D), velocity.z);
+        } else if (getNavigation().isDone() && fleeTicks == 0) {
+            // Stop residual drift once airborne instead of rising indefinitely.
+            setDeltaMovement(velocity.scale(0.6D));
         }
     }
 
@@ -141,7 +183,7 @@ public class MewBlockEntity extends PathfinderMob implements CatchablePokemon {
     public void fleeFrom(LivingEntity entity) {
         fleeTicks = 80;
         Vec3 away = position().subtract(entity.position()).normalize().scale(12.0D);
-        getNavigation().moveTo(getX() + away.x, getY(), getZ() + away.z, 1.8D);
+        getNavigation().moveTo(getX() + away.x, getY() + 3.0D, getZ() + away.z, 1.8D);
     }
 
     public Player getOwnerPlayer() {

@@ -64,6 +64,13 @@ public final class ModItems {
                     .saturationMod(0.8F)
                     .build())));
 
+    public static final RegistryObject<Item> ALLAY_BREAD = ITEMS.register("allay_bread",
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                    .nutrition(6)
+                    .saturationMod(0.6F)
+                    .alwaysEat()
+                    .effect(() -> new MobEffectInstance(ModEffects.ALLAY_FORM.get(), -1, 0, false, false, false), 1.0F)
+                    .build())));
     public static final RegistryObject<Item> MELON_SODA = ITEMS.register("melon_soda",
             () -> new DrinkItem(new Item.Properties().stacksTo(16).food(new FoodProperties.Builder()
                     .nutrition(4)
@@ -71,6 +78,40 @@ public final class ModItems {
                     .alwaysEat()
                     .effect(() -> new MobEffectInstance(MobEffects.JUMP, 30 * 20), 1.0F)
                     .build()), true));
+
+    public static final RegistryObject<Item> WATER = ITEMS.register("water",
+            () -> drink(1, 0.1F));
+
+    public static final RegistryObject<Item> HONEY_LEMON = ITEMS.register("honey_lemon",
+            () -> drink(4, 0.5F));
+
+    public static final RegistryObject<Item> CHOCOLATE_DRINK = ITEMS.register("chocolate_drink",
+            () -> drink(6, 0.7F));
+
+    public static final RegistryObject<Item> ORANGE_JUICE = ITEMS.register("orange_juice",
+            () -> drink(4, 0.4F));
+
+    public static final RegistryObject<Item> APPLE_JUICE = ITEMS.register("apple_juice",
+            () -> drink(4, 0.4F));
+
+    public static final RegistryObject<Item> GRAPE_JUICE = ITEMS.register("grape_juice",
+            () -> drink(4, 0.4F));
+
+    public static final RegistryObject<Item> COFFEE = ITEMS.register("coffee",
+            () -> new DrinkItem(new Item.Properties().stacksTo(16).food(new FoodProperties.Builder()
+                    .nutrition(2)
+                    .saturationMod(0.2F)
+                    .alwaysEat()
+                    .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 30 * 20), 1.0F)
+                    .build()), false));
+
+    private static DrinkItem drink(int nutrition, float saturation) {
+        return new DrinkItem(new Item.Properties().stacksTo(16).food(new FoodProperties.Builder()
+                .nutrition(nutrition)
+                .saturationMod(saturation)
+                .alwaysEat()
+                .build()), true);
+    }
 
     private ModItems() {
     }

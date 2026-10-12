@@ -5,7 +5,10 @@ import com.adash333.minecraftpokemon.client.model.DragonPokemonModel;
 import com.adash333.minecraftpokemon.client.renderer.DragonPokemonRenderer;
 import com.adash333.minecraftpokemon.client.renderer.MewBlockRenderer;
 import com.adash333.minecraftpokemon.client.renderer.PlayerCharacterSkinLayer;
+import com.adash333.minecraftpokemon.client.screen.VendingMachineScreen;
 import com.adash333.minecraftpokemon.registry.ModEntities;
+import com.adash333.minecraftpokemon.registry.ModMenus;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
@@ -26,6 +29,7 @@ public final class ClientSetup {
             EntityRenderers.register(ModEntities.MEW_BLOCK.get(), MewBlockRenderer::new);
             EntityRenderers.register(ModEntities.DRAGON_POKEMON.get(), DragonPokemonRenderer::new);
             EntityRenderers.register(ModEntities.MONSTER_BALL.get(), ThrownItemRenderer::new);
+            MenuScreens.register(ModMenus.VENDING_MACHINE.get(), VendingMachineScreen::new);
             MinecraftForge.EVENT_BUS.addListener(PlayerCharacterSkinLayer::renderFirstPersonArm);
         });
     }
