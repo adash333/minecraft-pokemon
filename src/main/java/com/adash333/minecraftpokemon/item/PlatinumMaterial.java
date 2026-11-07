@@ -1,5 +1,6 @@
 package com.adash333.minecraftpokemon.item;
 
+import com.adash333.minecraftpokemon.MinecraftPokemonMod;
 import com.adash333.minecraftpokemon.registry.ModItems;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ArmorItem;
@@ -39,7 +40,7 @@ public enum PlatinumMaterial implements ArmorMaterial, Tier {
 
     @Override
     public String getName() {
-        return ArmorMaterials.IRON.getName();
+        return MinecraftPokemonMod.MOD_ID + ":platinum";
     }
 
     @Override
