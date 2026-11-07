@@ -3,6 +3,7 @@ package com.adash333.minecraftpokemon.registry;
 import com.adash333.minecraftpokemon.MinecraftPokemonMod;
 import com.adash333.minecraftpokemon.item.DrinkItem;
 import com.adash333.minecraftpokemon.item.MonsterBallItem;
+import com.adash333.minecraftpokemon.item.NipponMaruItem;
 import com.adash333.minecraftpokemon.item.PeachBerryItem;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -15,6 +16,8 @@ import net.minecraftforge.registries.RegistryObject;
 public final class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, MinecraftPokemonMod.MOD_ID);
+
+    public static final RegistryObject<Item> NIPPON_MARU = ITEMS.register("nippon_maru", NipponMaruItem::new);
 
     public static final RegistryObject<Item> MONSTER_BALL = ITEMS.register("monster_ball",
             () -> new MonsterBallItem(new Item.Properties().stacksTo(16)));

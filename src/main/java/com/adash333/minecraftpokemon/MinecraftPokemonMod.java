@@ -2,6 +2,7 @@ package com.adash333.minecraftpokemon;
 
 import com.adash333.minecraftpokemon.entity.MewBlockEntity;
 import com.adash333.minecraftpokemon.entity.DragonPokemonEntity;
+import com.adash333.minecraftpokemon.item.NipponMaruItem;
 import com.adash333.minecraftpokemon.registry.ModBlocks;
 import com.adash333.minecraftpokemon.registry.ModEntities;
 import com.adash333.minecraftpokemon.registry.ModItems;
@@ -31,6 +32,7 @@ public class MinecraftPokemonMod {
         ModBlocks.BLOCKS.register(modBus);
         ModEntities.ENTITY_TYPES.register(modBus);
         ModMenus.MENUS.register(modBus);
+        NipponMaruItem.registerNetwork();
 
         modBus.addListener(this::addCreativeItems);
         modBus.addListener(this::registerAttributes);
@@ -40,6 +42,9 @@ public class MinecraftPokemonMod {
     }
 
     private void addCreativeItems(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.COMBAT) {
+            event.accept(ModItems.NIPPON_MARU);
+        }
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(ModItems.MONSTER_BALL);
             event.accept(ModItems.PEACH_BERRY);

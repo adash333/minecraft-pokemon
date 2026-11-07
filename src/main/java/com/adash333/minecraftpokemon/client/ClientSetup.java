@@ -4,6 +4,7 @@ import com.adash333.minecraftpokemon.client.model.MewBlockModel;
 import com.adash333.minecraftpokemon.client.model.DragonPokemonModel;
 import com.adash333.minecraftpokemon.client.renderer.DragonPokemonRenderer;
 import com.adash333.minecraftpokemon.client.renderer.MewBlockRenderer;
+import com.adash333.minecraftpokemon.client.renderer.NipponMaruSheathLayer;
 import com.adash333.minecraftpokemon.client.renderer.PlayerCharacterSkinLayer;
 import com.adash333.minecraftpokemon.client.screen.VendingMachineScreen;
 import com.adash333.minecraftpokemon.registry.ModEntities;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -22,6 +24,7 @@ public final class ClientSetup {
         modBus.addListener(ClientSetup::clientSetup);
         modBus.addListener(ClientSetup::registerLayerDefinitions);
         modBus.addListener(ClientSetup::addPlayerLayers);
+        modBus.addListener(ClientSetup::registerAdditionalModels);
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
@@ -43,12 +46,18 @@ public final class ClientSetup {
         PlayerRenderer classicRenderer = event.getSkin("default");
         if (classicRenderer != null) {
             classicRenderer.addLayer(PlayerCharacterSkinLayer.classic(classicRenderer));
+            classicRenderer.addLayer(new NipponMaruSheathLayer(classicRenderer));
         }
 
         PlayerRenderer slimRenderer = event.getSkin("slim");
         if (slimRenderer != null) {
             slimRenderer.addLayer(PlayerCharacterSkinLayer.slim(slimRenderer));
+            slimRenderer.addLayer(new NipponMaruSheathLayer(slimRenderer));
         }
+    }
+
+    private static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+        event.register(NipponMaruSheathLayer.MODEL);
     }
 
     private ClientSetup() {
