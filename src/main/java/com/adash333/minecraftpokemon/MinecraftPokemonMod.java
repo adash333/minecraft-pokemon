@@ -2,6 +2,7 @@ package com.adash333.minecraftpokemon;
 
 import com.adash333.minecraftpokemon.entity.MewBlockEntity;
 import com.adash333.minecraftpokemon.entity.DragonPokemonEntity;
+import com.adash333.minecraftpokemon.item.FirearmItem;
 import com.adash333.minecraftpokemon.item.NipponMaruItem;
 import com.adash333.minecraftpokemon.registry.ModBlocks;
 import com.adash333.minecraftpokemon.registry.ModEntities;
@@ -33,6 +34,7 @@ public class MinecraftPokemonMod {
         ModEntities.ENTITY_TYPES.register(modBus);
         ModMenus.MENUS.register(modBus);
         NipponMaruItem.registerNetwork();
+        FirearmItem.registerNetwork();
 
         modBus.addListener(this::addCreativeItems);
         modBus.addListener(this::registerAttributes);
@@ -44,6 +46,17 @@ public class MinecraftPokemonMod {
     private void addCreativeItems(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.accept(ModItems.NIPPON_MARU);
+            event.accept(ModItems.MP_ACE);
+            event.accept(ModItems.AK_47);
+            event.accept(ModItems.SHURIKEN);
+            event.accept(ModItems.PLATINUM_SWORD);
+            event.accept(ModItems.PLATINUM_HELMET);
+            event.accept(ModItems.PLATINUM_CHESTPLATE);
+            event.accept(ModItems.PLATINUM_LEGGINGS);
+            event.accept(ModItems.PLATINUM_BOOTS);
+        }
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.PLATINUM_INGOT);
         }
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(ModItems.MONSTER_BALL);

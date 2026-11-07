@@ -2,12 +2,17 @@ package com.adash333.minecraftpokemon.registry;
 
 import com.adash333.minecraftpokemon.MinecraftPokemonMod;
 import com.adash333.minecraftpokemon.item.DrinkItem;
+import com.adash333.minecraftpokemon.item.FirearmItem;
 import com.adash333.minecraftpokemon.item.MonsterBallItem;
 import com.adash333.minecraftpokemon.item.NipponMaruItem;
 import com.adash333.minecraftpokemon.item.PeachBerryItem;
+import com.adash333.minecraftpokemon.item.PlatinumMaterial;
+import com.adash333.minecraftpokemon.item.PlatinumSwordItem;
+import com.adash333.minecraftpokemon.item.ShurikenItem;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -107,6 +112,25 @@ public final class ModItems {
                     .alwaysEat()
                     .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 30 * 20), 1.0F)
                     .build()), false));
+
+    public static final RegistryObject<Item> MP_ACE = ITEMS.register("mp_ace", FirearmItem::new);
+    public static final RegistryObject<Item> AK_47 = ITEMS.register("ak_47", FirearmItem::new);
+    public static final RegistryObject<Item> SHURIKEN = ITEMS.register("shuriken", ShurikenItem::new);
+    public static final RegistryObject<Item> PLATINUM_SWORD = ITEMS.register("platinum_sword", PlatinumSwordItem::new);
+    public static final RegistryObject<Item> PLATINUM_HELMET = ITEMS.register("platinum_helmet",
+            () -> platinumArmor(ArmorItem.Type.HELMET));
+    public static final RegistryObject<Item> PLATINUM_CHESTPLATE = ITEMS.register("platinum_chestplate",
+            () -> platinumArmor(ArmorItem.Type.CHESTPLATE));
+    public static final RegistryObject<Item> PLATINUM_LEGGINGS = ITEMS.register("platinum_leggings",
+            () -> platinumArmor(ArmorItem.Type.LEGGINGS));
+    public static final RegistryObject<Item> PLATINUM_BOOTS = ITEMS.register("platinum_boots",
+            () -> platinumArmor(ArmorItem.Type.BOOTS));
+    public static final RegistryObject<Item> PLATINUM_INGOT = ITEMS.register("platinum_ingot",
+            () -> new Item(new Item.Properties().fireResistant()));
+
+    private static ArmorItem platinumArmor(ArmorItem.Type type) {
+        return new ArmorItem(PlatinumMaterial.PLATINUM, type, new Item.Properties().fireResistant());
+    }
 
     private static DrinkItem drink(int nutrition, float saturation) {
         return new DrinkItem(new Item.Properties().stacksTo(16).food(new FoodProperties.Builder()

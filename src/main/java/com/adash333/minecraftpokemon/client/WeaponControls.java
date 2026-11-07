@@ -1,6 +1,7 @@
 package com.adash333.minecraftpokemon.client;
 
 import com.adash333.minecraftpokemon.MinecraftPokemonMod;
+import com.adash333.minecraftpokemon.item.FirearmItem;
 import com.adash333.minecraftpokemon.item.NipponMaruItem;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
@@ -10,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = MinecraftPokemonMod.MOD_ID, value = Dist.CLIENT)
-public final class NipponMaruControls {
+public final class WeaponControls {
     @SubscribeEvent
     public static void onMousePress(InputEvent.MouseButton.Pre event) {
         if (event.getAction() == InputConstants.PRESS
@@ -40,20 +41,29 @@ public final class NipponMaruControls {
             return false;
         }
         if (minecraft.options.keyAttack.isActiveAndMatches(key)) {
-            NipponMaruItem.sendSlash(false);
+            sendAction(minecraft, false);
         } else if (minecraft.options.keyUse.isActiveAndMatches(key)) {
-            NipponMaruItem.sendSlash(true);
+            sendAction(minecraft, true);
         } else {
             return false;
         }
         return true;
     }
 
+    private static void sendAction(Minecraft minecraft, boolean use) {
+        if (minecraft.player.getMainHandItem().getItem() instanceof FirearmItem) {
+            FirearmItem.sendInput(use);
+        } else {
+            NipponMaruItem.sendSlash(use);
+        }
+    }
+
     private static boolean isReady(Minecraft minecraft) {
         return minecraft.player != null && minecraft.player.isAlive() && !minecraft.player.isSpectator()
                 && minecraft.screen == null && minecraft.getOverlay() == null && minecraft.mouseHandler.isMouseGrabbed()
-                && NipponMaruItem.heldHand(minecraft.player) != null;
+                && (minecraft.player.getMainHandItem().getItem() instanceof FirearmItem
+                        || NipponMaruItem.heldHand(minecraft.player) != null);
     }
 
-    private NipponMaruControls() {}
+    private WeaponControls() {}
 }

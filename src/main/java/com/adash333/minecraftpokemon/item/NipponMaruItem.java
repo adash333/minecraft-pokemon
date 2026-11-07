@@ -159,7 +159,8 @@ public final class NipponMaruItem extends Item {
             EntityHitResult hit = ProjectileUtil.getEntityHitResult(player, eye, clearEnd,
                     player.getBoundingBox().expandTowards(clearEnd.subtract(eye)).inflate(1.0),
                     entity -> entity.isPickable() && mobFor(entity) != null, eye.distanceToSqr(clearEnd));
-            if (hit != null) {
+            if (hit != null && level.clip(new ClipContext(eye, hit.getEntity().getBoundingBox().getCenter(),
+                    ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)).getType() == HitResult.Type.MISS) {
                 targets.add(mobFor(hit.getEntity()));
             }
         }

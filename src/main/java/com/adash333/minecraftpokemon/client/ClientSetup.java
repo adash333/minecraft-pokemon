@@ -32,6 +32,8 @@ public final class ClientSetup {
             EntityRenderers.register(ModEntities.MEW_BLOCK.get(), MewBlockRenderer::new);
             EntityRenderers.register(ModEntities.DRAGON_POKEMON.get(), DragonPokemonRenderer::new);
             EntityRenderers.register(ModEntities.MONSTER_BALL.get(), ThrownItemRenderer::new);
+            EntityRenderers.register(ModEntities.BULLET.get(), context -> new ThrownItemRenderer<>(context, 0.35F, false));
+            EntityRenderers.register(ModEntities.THROWN_SHURIKEN.get(), ThrownItemRenderer::new);
             MenuScreens.register(ModMenus.VENDING_MACHINE.get(), VendingMachineScreen::new);
             MinecraftForge.EVENT_BUS.addListener(PlayerCharacterSkinLayer::renderFirstPersonArm);
         });

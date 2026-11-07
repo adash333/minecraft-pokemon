@@ -4,6 +4,7 @@ import com.adash333.minecraftpokemon.MinecraftPokemonMod;
 import com.adash333.minecraftpokemon.entity.DragonPokemonEntity;
 import com.adash333.minecraftpokemon.entity.MewBlockEntity;
 import com.adash333.minecraftpokemon.entity.MonsterBallEntity;
+import com.adash333.minecraftpokemon.entity.WeaponProjectile;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -32,6 +33,16 @@ public final class ModEntities {
                     .clientTrackingRange(4)
                     .updateInterval(10)
                     .build("monster_ball"));
+
+    public static final RegistryObject<EntityType<WeaponProjectile>> BULLET = registerProjectile("bullet", 0.12F);
+    public static final RegistryObject<EntityType<WeaponProjectile>> THROWN_SHURIKEN =
+            registerProjectile("thrown_shuriken", 0.25F);
+
+    private static RegistryObject<EntityType<WeaponProjectile>> registerProjectile(String name, float size) {
+        return ENTITY_TYPES.register(name, () -> EntityType.Builder.<WeaponProjectile>of(
+                WeaponProjectile::new, MobCategory.MISC).sized(size, size)
+                .clientTrackingRange(8).updateInterval(1).build(name));
+    }
 
     private ModEntities() {
     }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "PPP",
+    "P P",
+    "P P"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraftpokemon:platinum_ingot"
+    }
+  },
+  "result": {
+    "item": "minecraftpokemon:platinum_leggings"
+  }
+}
