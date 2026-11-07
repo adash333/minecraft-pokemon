@@ -11,7 +11,7 @@ public final class PlatinumSwordItem extends SwordItem {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        target.setSecondsOnFire(6);
+        target.setSecondsOnFire(4);
         return super.hurtEnemy(stack, target, attacker);
     }
 }
