@@ -8,6 +8,4 @@
 
 # Prompt logging
 
-- When `/save-prompt` is requested, save a concise UTF-8 Japanese summary to `docs/prompt/YYMMDD-題名.md`.
-- Summarize the prompts, responses, implementation, and validation instead of copying the full transcript.
-- Stage every current-repository change with `git add -A`, commit it on `main`, and push explicitly to `origin/main`.
+- Run the [save-prompt skill](.agents/skills/save-prompt/SKILL.md) at the end of every completed task in this repository by default, and whenever the user requests `/save-prompt`. Follow any explicit instruction to skip saving, committing, or pushing.
