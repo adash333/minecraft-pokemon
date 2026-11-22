@@ -1,6 +1,9 @@
 package com.adash333.minecraftpokemon.client.renderer;
 
 import com.adash333.minecraftpokemon.MinecraftPokemonMod;
+import com.adash333.minecraftpokemon.entity.UnicornEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.HorseModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.PartPose;
@@ -28,6 +31,20 @@ public final class UnicornRenderer extends AbstractHorseRenderer<Horse, HorseMod
     @Override
     public ResourceLocation getTextureLocation(Horse horse) {
         return TEXTURE;
+    }
+
+    @Override
+    protected void setupRotations(Horse horse, PoseStack pose, float ageInTicks, float yaw, float partialTick) {
+        super.setupRotations(horse, pose, ageInTicks, yaw, partialTick);
+        if (horse instanceof UnicornEntity unicorn) {
+            float roll = unicorn.getRollProgress(partialTick);
+            if (roll > 0.0F) {
+                float pivot = horse.getBbHeight() * 0.45F;
+                pose.translate(0.0F, pivot, 0.0F);
+                pose.mulPose(Axis.ZP.rotationDegrees(360.0F * roll));
+                pose.translate(0.0F, -pivot, 0.0F);
+            }
+        }
     }
 
     public static LayerDefinition createBodyLayer() {

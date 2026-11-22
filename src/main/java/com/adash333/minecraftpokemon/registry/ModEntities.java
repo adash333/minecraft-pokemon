@@ -4,10 +4,10 @@ import com.adash333.minecraftpokemon.MinecraftPokemonMod;
 import com.adash333.minecraftpokemon.entity.DragonPokemonEntity;
 import com.adash333.minecraftpokemon.entity.MewBlockEntity;
 import com.adash333.minecraftpokemon.entity.MonsterBallEntity;
+import com.adash333.minecraftpokemon.entity.UnicornEntity;
 import com.adash333.minecraftpokemon.entity.WeaponProjectile;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -39,8 +39,8 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<WeaponProjectile>> THROWN_SHURIKEN =
             registerProjectile("thrown_shuriken", 0.25F);
 
-    public static final RegistryObject<EntityType<Horse>> UNICORN = ENTITY_TYPES.register("unicorn",
-            () -> EntityType.Builder.of(Horse::new, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<UnicornEntity>> UNICORN = ENTITY_TYPES.register("unicorn",
+            () -> EntityType.Builder.of(UnicornEntity::new, MobCategory.CREATURE)
                     .sized(1.3964844F, 1.6F)
                     .clientTrackingRange(10)
                     .build(MinecraftPokemonMod.MOD_ID + ":unicorn"));
