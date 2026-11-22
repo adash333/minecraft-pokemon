@@ -11,6 +11,7 @@ import com.adash333.minecraftpokemon.registry.ModMenus;
 import com.adash333.minecraftpokemon.registry.ModEffects;
 import com.adash333.minecraftpokemon.world.SpawnGachaPlacer;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -44,6 +45,9 @@ public class MinecraftPokemonMod {
     }
 
     private void addCreativeItems(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            event.accept(ModItems.UNICORN_SPAWN_EGG);
+        }
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.accept(ModItems.NIPPON_MARU);
             event.accept(ModItems.MP_ACE);
@@ -87,6 +91,7 @@ public class MinecraftPokemonMod {
     private void registerAttributes(EntityAttributeCreationEvent event) {
         AttributeSupplier attributes = MewBlockEntity.createAttributes().build();
         event.put(ModEntities.MEW_BLOCK.get(), attributes);
+        event.put(ModEntities.UNICORN.get(), AbstractHorse.createBaseHorseAttributes().build());
         event.put(ModEntities.DRAGON_POKEMON.get(), DragonPokemonEntity.createAttributes().build());
     }
 

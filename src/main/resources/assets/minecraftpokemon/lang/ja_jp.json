@@ -1,4 +1,6 @@
 {
+  "entity.minecraftpokemon.unicorn": "ユニコーン",
+  "item.minecraftpokemon.unicorn_spawn_egg": "ユニコーンのスポーンエッグ",
   "block.minecraftpokemon.ball_gacha": "モンスターボールガチャ",
   "block.minecraftpokemon.food_gacha": "もものみガチャ",
   "block.minecraftpokemon.vending_machine": "ドリンク自動販売機",

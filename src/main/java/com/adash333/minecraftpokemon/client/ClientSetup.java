@@ -6,6 +6,7 @@ import com.adash333.minecraftpokemon.client.renderer.DragonPokemonRenderer;
 import com.adash333.minecraftpokemon.client.renderer.MewBlockRenderer;
 import com.adash333.minecraftpokemon.client.renderer.NipponMaruSheathLayer;
 import com.adash333.minecraftpokemon.client.renderer.PlayerCharacterSkinLayer;
+import com.adash333.minecraftpokemon.client.renderer.UnicornRenderer;
 import com.adash333.minecraftpokemon.client.screen.VendingMachineScreen;
 import com.adash333.minecraftpokemon.registry.ModEntities;
 import com.adash333.minecraftpokemon.registry.ModItems;
@@ -35,6 +36,7 @@ public final class ClientSetup {
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             EntityRenderers.register(ModEntities.MEW_BLOCK.get(), MewBlockRenderer::new);
+            EntityRenderers.register(ModEntities.UNICORN.get(), UnicornRenderer::new);
             EntityRenderers.register(ModEntities.DRAGON_POKEMON.get(), DragonPokemonRenderer::new);
             EntityRenderers.register(ModEntities.MONSTER_BALL.get(), ThrownItemRenderer::new);
             EntityRenderers.register(ModEntities.BULLET.get(), context -> new ThrownItemRenderer<>(context, 0.35F, false));
@@ -46,6 +48,7 @@ public final class ClientSetup {
 
     private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(MewBlockModel.LAYER_LOCATION, MewBlockModel::createBodyLayer);
+        event.registerLayerDefinition(UnicornRenderer.LAYER_LOCATION, UnicornRenderer::createBodyLayer);
         event.registerLayerDefinition(DragonPokemonModel.LAYER_LOCATION, DragonPokemonModel::createBodyLayer);
     }
 
