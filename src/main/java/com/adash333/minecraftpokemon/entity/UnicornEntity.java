@@ -107,6 +107,10 @@ public final class UnicornEntity extends Horse {
                 Player player = level().getPlayerByUUID(rollingFor);
                 if (player != null) {
                     tameWithName(player);
+                    if (player.isAlive() && !player.isSpectator() && !player.isPassenger()
+                            && distanceToSqr(player) <= 16.0D) {
+                        doPlayerRide(player);
+                    }
                 } else {
                     setOwnerUUID(rollingFor);
                     setTamed(true);
