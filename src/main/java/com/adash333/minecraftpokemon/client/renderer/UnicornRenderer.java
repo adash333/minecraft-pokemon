@@ -4,6 +4,7 @@ import com.adash333.minecraftpokemon.MinecraftPokemonMod;
 import com.adash333.minecraftpokemon.entity.UnicornEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import java.util.Set;
 import net.minecraft.client.model.HorseModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -17,6 +18,7 @@ import net.minecraft.client.renderer.entity.AbstractHorseRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.HorseArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.horse.Horse;
 
@@ -38,12 +40,13 @@ public final class UnicornRenderer extends AbstractHorseRenderer<Horse, HorseMod
     private static HorseModel<Horse> createModel(EntityRendererProvider.Context context, boolean colors) {
         ModelPart root = context.bakeLayer(LAYER_LOCATION);
         if (colors) {
-            // Keep the animated parent transforms and draw only the three colored parts.
+            // Keep the animated parent transforms and draw only the colored parts.
             root.getAllParts().forEach(part -> part.skipDraw = true);
         }
         ModelPart head = root.getChild("head_parts");
         head.getChild("mane").skipDraw = !colors;
         head.getChild("horn").skipDraw = !colors;
+        head.getChild("head").getChild("eyes").skipDraw = !colors;
         root.getChild("body").getChild("tail").skipDraw = !colors;
         return new HorseModel<>(root);
     }
@@ -69,10 +72,16 @@ public final class UnicornRenderer extends AbstractHorseRenderer<Horse, HorseMod
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = HorseModel.createBodyMesh(CubeDeformation.NONE);
-        mesh.getRoot().getChild("head_parts").addOrReplaceChild("horn",
+        var head = mesh.getRoot().getChild("head_parts");
+        head.addOrReplaceChild("horn",
                 CubeListBuilder.create()
                         .texOffs(0, 0).addBox(-1.0F, -16.0F, -1.5F, 2.0F, 5.0F, 2.0F)
                         .texOffs(8, 0).addBox(-0.5F, -18.0F, -1.0F, 1.0F, 2.0F, 1.0F),
+                PartPose.ZERO);
+        head.getChild("head").addOrReplaceChild("eyes",
+                CubeListBuilder.create()
+                        .texOffs(16, 0).addBox(-3.01F, -10.75F, -1.0F, 0.0F, 3.0F, 3.0F, Set.of(Direction.WEST))
+                        .texOffs(16, 0).addBox(3.01F, -10.75F, -1.0F, 0.0F, 3.0F, 3.0F, Set.of(Direction.EAST)),
                 PartPose.ZERO);
         return LayerDefinition.create(mesh, 64, 64);
     }
