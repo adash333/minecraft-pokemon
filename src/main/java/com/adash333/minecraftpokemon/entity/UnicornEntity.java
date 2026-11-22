@@ -15,6 +15,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +28,9 @@ import net.minecraft.world.phys.Vec3;
 public final class UnicornEntity extends Horse {
     private static final int BABY_AGE = -24000;
     private static final int ROLL_DURATION = 24;
+    private static final float FLIGHT_SPEED = 0.32F;
+    private static final float VERTICAL_SPEED = 0.24F;
+    private static final float LEVEL_PITCH = 10.0F;
     private static final EntityDataAccessor<Integer> ROLL_TICKS =
             SynchedEntityData.defineId(UnicornEntity.class, EntityDataSerializers.INT);
     private UUID rollingFor;
@@ -122,7 +126,39 @@ public final class UnicornEntity extends Horse {
     }
 
     @Override
+    public boolean isNoGravity() {
+        return super.isNoGravity()
+                || (!onGround() && getControllingPassenger() instanceof Player && canFly());
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        // Mounted flight only suspends gravity while a rider is in control.
+        if (!super.isNoGravity()) {
+            tag.remove("NoGravity");
+        }
+    }
+
+    private boolean canFly() {
+        return !isBaby() && isTamed() && !isInWater() && !isInLava();
+    }
+
+    @Override
     public void travel(Vec3 input) {
+        if (getControllingPassenger() instanceof Player rider && canFly()) {
+            float pitch = rider.getXRot();
+            float climb = Math.abs(pitch) <= LEVEL_PITCH ? 0.0F : -Mth.sin(pitch * Mth.DEG_TO_RAD);
+            double vertical = Math.max(0.0D, input.z) * climb * VERTICAL_SPEED;
+            if (!onGround() || vertical > 0.0D) {
+                setDeltaMovement(0.0D, vertical, 0.0D);
+                moveRelative(FLIGHT_SPEED, new Vec3(input.x, 0.0D, input.z * Mth.cos(pitch * Mth.DEG_TO_RAD)));
+                resetFallDistance();
+                move(MoverType.SELF, getDeltaMovement());
+                calculateEntityAnimation(false);
+                return;
+            }
+        }
         super.travel(entityData.get(ROLL_TICKS) > 0 ? Vec3.ZERO : input);
     }
 

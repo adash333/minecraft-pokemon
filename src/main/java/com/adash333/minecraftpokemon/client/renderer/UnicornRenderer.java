@@ -32,13 +32,12 @@ public final class UnicornRenderer extends AbstractHorseRenderer<Horse, HorseMod
             new ResourceLocation(MinecraftPokemonMod.MOD_ID, "textures/entity/unicorn_colors.png");
 
     public UnicornRenderer(EntityRendererProvider.Context context) {
-        super(context, createModel(context, false), 1.1F);
-        addLayer(new ColorLayer(createModel(context, true)));
+        super(context, createModel(context.bakeLayer(LAYER_LOCATION), false), 1.1F);
+        addLayer(new ColorLayer(context.bakeLayer(LAYER_LOCATION)));
         addLayer(new HorseArmorLayer(this, context.getModelSet()));
     }
 
-    private static HorseModel<Horse> createModel(EntityRendererProvider.Context context, boolean colors) {
-        ModelPart root = context.bakeLayer(LAYER_LOCATION);
+    private static HorseModel<Horse> createModel(ModelPart root, boolean colors) {
         if (colors) {
             // Keep the animated parent transforms and draw only the colored parts.
             root.getAllParts().forEach(part -> part.skipDraw = true);
@@ -88,16 +87,19 @@ public final class UnicornRenderer extends AbstractHorseRenderer<Horse, HorseMod
 
     private final class ColorLayer extends RenderLayer<Horse, HorseModel<Horse>> {
         private final HorseModel<Horse> colors;
+        private final ModelPart eyes;
 
-        private ColorLayer(HorseModel<Horse> colors) {
+        private ColorLayer(ModelPart root) {
             super(UnicornRenderer.this);
-            this.colors = colors;
+            colors = createModel(root, true);
+            eyes = root.getChild("head_parts").getChild("head").getChild("eyes");
         }
 
         @Override
         public void render(PoseStack pose, MultiBufferSource buffers, int light, Horse horse,
                            float limbSwing, float limbSwingAmount, float partialTick,
                            float ageInTicks, float headYaw, float headPitch) {
+            eyes.visible = horse.isBaby();
             coloredCutoutModelCopyLayerRender(getParentModel(), colors, COLORS, pose, buffers, light, horse,
                     limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch, partialTick, 1.0F, 1.0F, 1.0F);
         }
