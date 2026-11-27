@@ -14,6 +14,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -21,6 +22,9 @@ import net.minecraftforge.registries.RegistryObject;
 public final class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, MinecraftPokemonMod.MOD_ID);
+
+    public static final RegistryObject<Item> UNICORN_SPAWN_EGG = ITEMS.register("unicorn_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.UNICORN, 0xF4F0FF, 0xC89FEF, new Item.Properties()));
 
     public static final RegistryObject<Item> NIPPON_MARU = ITEMS.register("nippon_maru", NipponMaruItem::new);
 
